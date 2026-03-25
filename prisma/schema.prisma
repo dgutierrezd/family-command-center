@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String   @id @default(uuid())
+  email               String   @unique
+  name                String
+  avatarUrl           String?  @map("avatar_url")
+  googleRefreshToken  String?  @map("google_refresh_token")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  familyMemberships   FamilyMember[]
+  createdEvents       Event[]            @relation("EventCreator")
+  createdMeals        Meal[]             @relation("MealCreator")
+  createdChores       Chore[]            @relation("ChoreCreator")
+  assignedChores      Chore[]            @relation("ChoreAssignee")
+  choreCompletions    ChoreCompletion[]  @relation("CompletionCompleter")
+  choreVerifications  ChoreCompletion[]  @relation("CompletionVerifier")
+  checkedGroceryItems GroceryItem[]      @relation("GroceryChecker")
+
+  @@map("users")
+}
+
+model Family {
+  id         String   @id @default(uuid())
+  name       String
+  inviteCode String   @unique @map("invite_code")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  members      FamilyMember[]
+  events       Event[]
+  meals        Meal[]
+  groceryItems GroceryItem[]
+  chores       Chore[]
+
+  @@map("families")
+}
+
+model FamilyMember {
+  familyId String   @map("family_id")
+  userId   String   @map("user_id")
+  role     String   @default("member")
+  joinedAt DateTime @default(now()) @map("joined_at")
+
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([familyId, userId])
+  @@map("family_members")
+}
+
+model Event {
+  id             String   @id @default(uuid())
+  familyId       String   @map("family_id")
+  title          String
+  description    String?
+  startTime      DateTime @map("start_time")
+  endTime        DateTime @map("end_time")
+  allDay         Boolean  @default(false) @map("all_day")
+  recurrenceRule String?  @map("recurrence_rule")
+  googleEventId  String?  @unique @map("google_event_id")
+  color          String   @default("blue")
+  createdBy      String   @map("created_by")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  family  Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  creator User   @relation("EventCreator", fields: [createdBy], references: [id])
+
+  @@index([familyId])
+  @@index([startTime])
+  @@map("events")
+}
+
+model Meal {
+  id        String   @id @default(uuid())
+  familyId  String   @map("family_id")
+  name      String
+  date      String
+  mealType  String   @map("meal_type")
+  recipeUrl String?  @map("recipe_url")
+  notes     String?
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  family       Family           @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  creator      User             @relation("MealCreator", fields: [createdBy], references: [id])
+  ingredients  MealIngredient[]
+  groceryItems GroceryItem[]
+
+  @@index([familyId, date])
+  @@map("meals")
+}
+
+model MealIngredient {
+  id       String @id @default(uuid())
+  mealId   String @map("meal_id")
+  name     String
+  quantity String?
+  category String @default("Other")
+
+  meal Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@map("meal_ingredients")
+}
+
+model GroceryItem {
+  id           String   @id @default(uuid())
+  familyId     String   @map("family_id")
+  name         String
+  quantity     String?
+  category     String   @default("Other")
+  sourceMealId String?  @map("source_meal_id")
+  checked      Boolean  @default(false)
+  checkedBy    String?  @map("checked_by")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  family     Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  sourceMeal Meal?  @relation(fields: [sourceMealId], references: [id], onDelete: SetNull)
+  checker    User?  @relation("GroceryChecker", fields: [checkedBy], references: [id])
+
+  @@index([familyId])
+  @@map("grocery_items")
+}
+
+model Chore {
+  id             String   @id @default(uuid())
+  familyId       String   @map("family_id")
+  title          String
+  description    String?
+  assignedTo     String?  @map("assigned_to")
+  recurrenceRule String?  @map("recurrence_rule")
+  points         Int      @default(1)
+  createdBy      String   @map("created_by")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  family      Family            @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  creator     User              @relation("ChoreCreator", fields: [createdBy], references: [id])
+  assignee    User?             @relation("ChoreAssignee", fields: [assignedTo], references: [id])
+  completions ChoreCompletion[]
+
+  @@index([familyId])
+  @@map("chores")
+}
+
+model ChoreCompletion {
+  id          String   @id @default(uuid())
+  choreId     String   @map("chore_id")
+  completedBy String   @map("completed_by")
+  completedAt DateTime @default(now()) @map("completed_at")
+  verifiedBy  String?  @map("verified_by")
+
+  chore     Chore @relation(fields: [choreId], references: [id], onDelete: Cascade)
+  completer User  @relation("CompletionCompleter", fields: [completedBy], references: [id])
+  verifier  User? @relation("CompletionVerifier", fields: [verifiedBy], references: [id])
+
+  @@index([choreId])
+  @@map("chore_completions")
+}

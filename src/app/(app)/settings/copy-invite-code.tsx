@@ -1,0 +1,34 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Copy, Check } from "lucide-react";
+
+interface CopyInviteCodeProps {
+  code: string;
+}
+
+export function CopyInviteCode({ code }: CopyInviteCodeProps) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopy() {
+    await navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <code className="rounded-md bg-muted px-3 py-1.5 text-sm font-mono">
+        {code}
+      </code>
+      <Button variant="ghost" size="icon-sm" onClick={handleCopy}>
+        {copied ? (
+          <Check className="size-3.5 text-emerald-500" />
+        ) : (
+          <Copy className="size-3.5" />
+        )}
+      </Button>
+    </div>
+  );
+}
