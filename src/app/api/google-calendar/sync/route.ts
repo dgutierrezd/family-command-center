@@ -20,12 +20,18 @@ export async function POST(request: NextRequest) {
   const timeMin = startOfMonth(now).toISOString();
   const timeMax = endOfMonth(addMonths(now, 2)).toISOString();
 
-  const result = await syncGoogleEvents(
-    session.user.id,
-    membership.family_id,
-    timeMin,
-    timeMax
-  );
+  try {
+    const result = await syncGoogleEvents(
+      session.user.id,
+      membership.family_id,
+      timeMin,
+      timeMax
+    );
 
-  return NextResponse.json(result);
+    return NextResponse.json(result);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Sync failed";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

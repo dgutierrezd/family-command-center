@@ -14,10 +14,19 @@ async function getAuthenticatedClient(userId: string) {
     select: { googleRefreshToken: true },
   });
 
-  if (!user?.googleRefreshToken) return null;
+  if (!user?.googleRefreshToken) {
+    throw new Error("No Google account linked. Please sign out and sign back in to grant calendar access.");
+  }
 
   const oauth2Client = getOAuth2Client();
   oauth2Client.setCredentials({ refresh_token: user.googleRefreshToken });
+
+  // Verify the token works by requesting a fresh access token
+  try {
+    await oauth2Client.getAccessToken();
+  } catch {
+    throw new Error("Google session expired. Please sign out and sign back in to re-authorize.");
+  }
 
   return oauth2Client;
 }
@@ -28,28 +37,32 @@ export async function fetchGoogleCalendarEvents(
   timeMax: string
 ) {
   const auth = await getAuthenticatedClient(userId);
-  if (!auth) return [];
 
   const calendar = google.calendar({ version: "v3", auth });
 
-  const response = await calendar.events.list({
-    calendarId: "primary",
-    timeMin,
-    timeMax,
-    singleEvents: true,
-    orderBy: "startTime",
-    maxResults: 250,
-  });
+  try {
+    const response = await calendar.events.list({
+      calendarId: "primary",
+      timeMin,
+      timeMax,
+      singleEvents: true,
+      orderBy: "startTime",
+      maxResults: 250,
+    });
 
-  return (response.data.items ?? []).map((event) => ({
-    googleEventId: event.id!,
-    title: event.summary ?? "Untitled",
-    description: event.description ?? null,
-    startTime: new Date(event.start?.dateTime ?? event.start?.date ?? ""),
-    endTime: new Date(event.end?.dateTime ?? event.end?.date ?? ""),
-    allDay: !event.start?.dateTime,
-    color: event.colorId ?? "blue",
-  }));
+    return (response.data.items ?? []).map((event) => ({
+      googleEventId: event.id!,
+      title: event.summary ?? "Untitled",
+      description: event.description ?? null,
+      startTime: new Date(event.start?.dateTime ?? event.start?.date ?? ""),
+      endTime: new Date(event.end?.dateTime ?? event.end?.date ?? ""),
+      allDay: !event.start?.dateTime,
+      color: event.colorId ?? "blue",
+    }));
+  } catch (error) {
+    console.error("Google Calendar API error:", error);
+    throw new Error("Failed to fetch Google Calendar events. Please re-authenticate.");
+  }
 }
 
 export async function syncGoogleEvents(
