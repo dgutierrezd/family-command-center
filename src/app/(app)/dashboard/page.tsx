@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
 import { startOfDay, endOfDay, format } from "date-fns";
 import Link from "next/link";
 import {
@@ -18,7 +17,7 @@ import {
   Plus,
   ArrowRight,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+
 
 export const metadata = {
   title: "Dashboard",
@@ -59,15 +58,15 @@ export default async function DashboardPage() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Link href="/calendar" className={cn(buttonVariants({ size: "sm" }))}>
+        <Link href="/calendar" className="inline-flex items-center gap-1 rounded-lg bg-primary px-2.5 h-7 text-[0.8rem] font-medium text-primary-foreground hover:bg-primary/80 transition-colors">
           <Plus className="size-3.5" />
           Add Event
         </Link>
-        <Link href="/meals" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+        <Link href="/meals" className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 h-7 text-[0.8rem] font-medium hover:bg-muted transition-colors">
           <Plus className="size-3.5" />
           Plan Meal
         </Link>
-        <Link href="/chores" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+        <Link href="/chores" className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 h-7 text-[0.8rem] font-medium hover:bg-muted transition-colors">
           <Plus className="size-3.5" />
           Add Chore
         </Link>
@@ -81,7 +80,7 @@ export default async function DashboardPage() {
               <CalendarDays className="size-4 text-indigo-500" />
               Today&apos;s Events
             </CardTitle>
-            <Link href="/calendar" className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}>
+            <Link href="/calendar" className="inline-flex items-center justify-center size-7 rounded-lg hover:bg-muted transition-colors">
               <ArrowRight className="size-4" />
             </Link>
           </CardHeader>
@@ -128,7 +127,7 @@ export default async function DashboardPage() {
               <UtensilsCrossed className="size-4 text-emerald-500" />
               Today&apos;s Meals
             </CardTitle>
-            <Link href="/meals" className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}>
+            <Link href="/meals" className="inline-flex items-center justify-center size-7 rounded-lg hover:bg-muted transition-colors">
               <ArrowRight className="size-4" />
             </Link>
           </CardHeader>
@@ -160,7 +159,7 @@ export default async function DashboardPage() {
               <ListChecks className="size-4 text-amber-500" />
               Chores Due
             </CardTitle>
-            <Link href="/chores" className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}>
+            <Link href="/chores" className="inline-flex items-center justify-center size-7 rounded-lg hover:bg-muted transition-colors">
               <ArrowRight className="size-4" />
             </Link>
           </CardHeader>

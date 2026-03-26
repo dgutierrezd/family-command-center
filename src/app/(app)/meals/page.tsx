@@ -2,9 +2,7 @@ import Link from "next/link";
 import { getMealsForWeek } from "@/actions/meals";
 import { MealGrid } from "@/components/meals/meal-grid";
 import { GenerateListButton } from "@/components/meals/generate-list-button";
-import { buttonVariants } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 function getMonday(dateStr?: string): Date {
   const d = dateStr ? new Date(dateStr + "T00:00:00") : new Date();
@@ -59,7 +57,7 @@ export default async function MealsPage({
       <div className="flex items-center justify-between">
         <Link
           href={`/meals?week=${prevWeek}`}
-          className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
+          className="inline-flex items-center justify-center size-8 rounded-lg border border-border bg-background hover:bg-muted transition-colors"
         >
           <ChevronLeftIcon />
         </Link>
@@ -68,7 +66,7 @@ export default async function MealsPage({
         </span>
         <Link
           href={`/meals?week=${nextWeek}`}
-          className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
+          className="inline-flex items-center justify-center size-8 rounded-lg border border-border bg-background hover:bg-muted transition-colors"
         >
           <ChevronRightIcon />
         </Link>
