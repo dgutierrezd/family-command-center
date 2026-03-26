@@ -12,11 +12,13 @@ export default async function AppLayout({
 }) {
   const { session, membership } = await requireFamily();
   const familyId = membership.family_id;
-  const family = membership.families as unknown as {
-    id: string;
-    name: string;
-    invite_code: string;
-    created_at: string;
+  // Prisma returns camelCase — normalize to snake_case for the frontend types
+  const rawFamily = membership.families as Record<string, unknown>;
+  const family = {
+    id: rawFamily.id as string,
+    name: rawFamily.name as string,
+    invite_code: (rawFamily.inviteCode ?? rawFamily.invite_code) as string,
+    created_at: String(rawFamily.createdAt ?? rawFamily.created_at ?? ""),
   };
   const members = await getFamilyMembers(familyId);
 

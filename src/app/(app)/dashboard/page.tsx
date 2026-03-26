@@ -26,9 +26,10 @@ export const metadata = {
 
 export default async function DashboardPage() {
   const { session, membership } = await requireFamily();
-  const family = membership.families as unknown as {
-    id: string;
-    name: string;
+  const rawFamily = membership.families as Record<string, unknown>;
+  const family = {
+    id: rawFamily.id as string,
+    name: rawFamily.name as string,
   };
 
   const today = new Date();

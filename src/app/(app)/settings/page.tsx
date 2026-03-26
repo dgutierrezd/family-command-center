@@ -19,11 +19,12 @@ export const metadata = {
 export default async function SettingsPage() {
   const { membership } = await requireFamily();
   const familyId = membership.family_id;
-  const family = membership.families as unknown as {
-    id: string;
-    name: string;
-    invite_code: string;
-    created_at: string;
+  const rawFamily = membership.families as Record<string, unknown>;
+  const family = {
+    id: rawFamily.id as string,
+    name: rawFamily.name as string,
+    invite_code: (rawFamily.inviteCode ?? rawFamily.invite_code) as string,
+    created_at: String(rawFamily.createdAt ?? rawFamily.created_at ?? ""),
   };
 
   const membersRaw = await getFamilyMembers(familyId);
