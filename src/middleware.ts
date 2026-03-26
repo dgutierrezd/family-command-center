@@ -1,12 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const publicPaths = ["/login", "/invite", "/api/auth", "/api/cron"];
+const publicPaths = ["/login", "/setup", "/invite", "/api/auth", "/api/cron"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Redirect authenticated users away from login
+  // Redirect authenticated users away from login to dashboard
   if (pathname === "/login") {
     const token = await getToken({ req: request });
     if (token) {

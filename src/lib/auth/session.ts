@@ -32,7 +32,7 @@ export async function requireFamily() {
   const session = await requireSession();
   const membership = await getUserFamily(session.user.id);
   if (!membership) {
-    redirect("/login?setup=true");
+    redirect("/setup");
   }
   return { session, membership };
 }
