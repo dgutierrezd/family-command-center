@@ -49,9 +49,40 @@ export const choreSchema = z.object({
   points: z.number().int().min(0).max(100).default(1),
 });
 
+export const locationSchema = z.object({
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+});
+
+export const sharedListSchema = z.object({
+  name: z.string().min(1, "List name is required").max(200),
+  template: z.string().nullable().optional(),
+});
+
+export const sharedListItemSchema = z.object({
+  name: z.string().min(1, "Item name is required").max(200),
+});
+
+export const rewardSchema = z.object({
+  name: z.string().min(1, "Reward name is required").max(200),
+  description: z.string().max(500).optional(),
+  points_cost: z.number().int().min(1, "Must cost at least 1 point").max(10000),
+});
+
+export const familyPreferencesSchema = z.object({
+  dietary_restrictions: z.array(z.string()).optional(),
+  cuisine_preferences: z.array(z.string()).optional(),
+  household_size: z.number().int().min(1).max(20).optional(),
+});
+
 export type CreateFamilyInput = z.infer<typeof createFamilySchema>;
 export type JoinFamilyInput = z.infer<typeof joinFamilySchema>;
 export type EventInput = z.infer<typeof eventSchema>;
 export type MealInput = z.infer<typeof mealSchema>;
 export type GroceryItemInput = z.infer<typeof groceryItemSchema>;
 export type ChoreInput = z.infer<typeof choreSchema>;
+export type LocationInput = z.infer<typeof locationSchema>;
+export type SharedListInput = z.infer<typeof sharedListSchema>;
+export type SharedListItemInput = z.infer<typeof sharedListItemSchema>;
+export type RewardInput = z.infer<typeof rewardSchema>;
+export type FamilyPreferencesInput = z.infer<typeof familyPreferencesSchema>;

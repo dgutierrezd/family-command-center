@@ -16,14 +16,20 @@ model User {
   googleRefreshToken  String?  @map("google_refresh_token")
   createdAt           DateTime @default(now()) @map("created_at")
 
-  familyMemberships   FamilyMember[]
-  createdEvents       Event[]            @relation("EventCreator")
-  createdMeals        Meal[]             @relation("MealCreator")
-  createdChores       Chore[]            @relation("ChoreCreator")
-  assignedChores      Chore[]            @relation("ChoreAssignee")
-  choreCompletions    ChoreCompletion[]  @relation("CompletionCompleter")
-  choreVerifications  ChoreCompletion[]  @relation("CompletionVerifier")
-  checkedGroceryItems GroceryItem[]      @relation("GroceryChecker")
+  familyMemberships      FamilyMember[]
+  createdEvents          Event[]            @relation("EventCreator")
+  createdMeals           Meal[]             @relation("MealCreator")
+  createdChores          Chore[]            @relation("ChoreCreator")
+  assignedChores         Chore[]            @relation("ChoreAssignee")
+  choreCompletions       ChoreCompletion[]  @relation("CompletionCompleter")
+  choreVerifications     ChoreCompletion[]  @relation("CompletionVerifier")
+  checkedGroceryItems    GroceryItem[]      @relation("GroceryChecker")
+  createdSharedLists     SharedList[]       @relation("SharedListCreator")
+  createdSharedListItems SharedListItem[]   @relation("SharedListItemCreator")
+  createdRewards         Reward[]           @relation("RewardCreator")
+  redemptions            Redemption[]       @relation("RedemptionRedeemer")
+  approvedRedemptions    Redemption[]       @relation("RedemptionApprover")
+  pushSubscriptions      PushSubscription[]
 
   @@map("users")
 }
@@ -32,6 +38,8 @@ model Family {
   id         String   @id @default(uuid())
   name       String
   inviteCode String   @unique @map("invite_code")
+  latitude   Float?
+  longitude  Float?
   createdAt  DateTime @default(now()) @map("created_at")
 
   members      FamilyMember[]
@@ -39,6 +47,8 @@ model Family {
   meals        Meal[]
   groceryItems GroceryItem[]
   chores       Chore[]
+  sharedLists  SharedList[]
+  rewards      Reward[]
 
   @@map("families")
 }
@@ -162,4 +172,104 @@ model ChoreCompletion {
 
   @@index([choreId])
   @@map("chore_completions")
+}
+
+model SharedList {
+  id        String   @id @default(uuid())
+  familyId  String   @map("family_id")
+  name      String
+  template  String?
+  archived  Boolean  @default(false)
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  family  Family           @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  creator User             @relation("SharedListCreator", fields: [createdBy], references: [id])
+  items   SharedListItem[]
+
+  @@index([familyId])
+  @@map("shared_lists")
+}
+
+model SharedListItem {
+  id        String   @id @default(uuid())
+  listId    String   @map("list_id")
+  name      String
+  checked   Boolean  @default(false)
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  list    SharedList @relation(fields: [listId], references: [id], onDelete: Cascade)
+  creator User       @relation("SharedListItemCreator", fields: [createdBy], references: [id])
+
+  @@index([listId])
+  @@map("shared_list_items")
+}
+
+model Reward {
+  id          String   @id @default(uuid())
+  familyId    String   @map("family_id")
+  name        String
+  description String?
+  pointsCost  Int      @map("points_cost")
+  active      Boolean  @default(true)
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  family      Family       @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  creator     User         @relation("RewardCreator", fields: [createdBy], references: [id])
+  redemptions Redemption[]
+
+  @@index([familyId])
+  @@map("rewards")
+}
+
+model Redemption {
+  id         String    @id @default(uuid())
+  rewardId   String    @map("reward_id")
+  redeemedBy String    @map("redeemed_by")
+  status     String    @default("pending")
+  approvedBy String?   @map("approved_by")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  resolvedAt DateTime? @map("resolved_at")
+
+  reward   Reward @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+  redeemer User   @relation("RedemptionRedeemer", fields: [redeemedBy], references: [id])
+  approver User?  @relation("RedemptionApprover", fields: [approvedBy], references: [id])
+
+  @@index([rewardId])
+  @@map("redemptions")
+}
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_subscriptions")
+}
+
+model NotificationPreference {
+  userId           String  @id @map("user_id")
+  eventReminders   Boolean @default(true) @map("event_reminders")
+  choreAssignments Boolean @default(true) @map("chore_assignments")
+  morningDigest    Boolean @default(true) @map("morning_digest")
+  rewardApprovals  Boolean @default(true) @map("reward_approvals")
+
+  @@map("notification_preferences")
+}
+
+model FamilyPreferences {
+  familyId            String  @id @map("family_id")
+  dietaryRestrictions String? @map("dietary_restrictions")
+  cuisinePreferences  String? @map("cuisine_preferences")
+  householdSize       Int?    @map("household_size")
+
+  @@map("family_preferences")
 }

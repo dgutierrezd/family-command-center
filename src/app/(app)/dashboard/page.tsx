@@ -2,6 +2,8 @@ import { requireFamily } from "@/lib/auth/session";
 import { getEventsForRange } from "@/actions/events";
 import { getMealsForWeek } from "@/actions/meals";
 import { getChoresWithCompletions } from "@/actions/chores";
+import { getWeather } from "@/actions/weather";
+import { WeatherCard } from "@/components/dashboard/weather-card";
 import {
   Card,
   CardContent,
@@ -36,10 +38,11 @@ export default async function DashboardPage() {
   const dayEnd = endOfDay(today).toISOString();
   const todayStr = format(today, "yyyy-MM-dd");
 
-  const [events, meals, chores] = await Promise.all([
+  const [events, meals, chores, weather] = await Promise.all([
     getEventsForRange(dayStart, dayEnd),
     getMealsForWeek(todayStr, todayStr),
     getChoresWithCompletions(),
+    getWeather(),
   ]);
 
   const pendingChores = chores.filter(
@@ -71,6 +74,8 @@ export default async function DashboardPage() {
           Add Chore
         </Link>
       </div>
+
+      <WeatherCard weather={weather} />
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Today's Events */}

@@ -11,6 +11,11 @@ import { Badge } from "@/components/ui/badge";
 import type { FamilyMember, User } from "@/types";
 import { CopyInviteCode } from "./copy-invite-code";
 import { GoogleCalendarSync } from "./google-calendar-sync";
+import { LocationPicker } from "@/components/settings/location-picker";
+import { NotificationPreferences } from "@/components/settings/notification-preferences";
+import { getNotificationPreferences } from "@/actions/notifications";
+import { DietaryPreferences } from "@/components/settings/dietary-preferences";
+import { getFamilyPreferences } from "@/actions/preferences";
 
 export const metadata = {
   title: "Settings",
@@ -25,9 +30,15 @@ export default async function SettingsPage() {
     name: rawFamily.name as string,
     invite_code: (rawFamily.inviteCode ?? rawFamily.invite_code) as string,
     created_at: String(rawFamily.createdAt ?? rawFamily.created_at ?? ""),
+    latitude: (rawFamily.latitude ?? null) as number | null,
+    longitude: (rawFamily.longitude ?? null) as number | null,
   };
 
-  const membersRaw = await getFamilyMembers(familyId);
+  const [membersRaw, notifPrefs, dietaryPrefs] = await Promise.all([
+    getFamilyMembers(familyId),
+    getNotificationPreferences(),
+    getFamilyPreferences(),
+  ]);
   const members = membersRaw as (FamilyMember & { user: User })[];
 
   return (
@@ -69,6 +80,52 @@ export default async function SettingsPage() {
           </CardHeader>
           <CardContent>
             <GoogleCalendarSync />
+          </CardContent>
+        </Card>
+
+        {/* Notifications */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Notifications</CardTitle>
+            <CardDescription>
+              Enable push notifications to stay on top of events and chores.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <NotificationPreferences initialPrefs={notifPrefs} />
+          </CardContent>
+        </Card>
+
+        {/* Location */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Location</CardTitle>
+            <CardDescription>
+              Set your location for weather forecasts on the dashboard.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LocationPicker
+              initialLat={family.latitude}
+              initialLng={family.longitude}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Dietary Preferences */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Dietary Preferences</CardTitle>
+            <CardDescription>
+              Configure dietary needs and cuisine preferences for AI meal suggestions.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DietaryPreferences
+              initialDietary={dietaryPrefs.dietary_restrictions}
+              initialCuisines={dietaryPrefs.cuisine_preferences}
+              initialHouseholdSize={dietaryPrefs.household_size}
+            />
           </CardContent>
         </Card>
 

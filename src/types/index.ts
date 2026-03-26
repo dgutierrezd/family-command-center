@@ -95,3 +95,70 @@ export interface ChoreCompletion {
   verified_by: string | null;
   completer?: User | null;
 }
+
+export interface WeatherData {
+  current_temp: number;
+  high: number;
+  low: number;
+  precipitation_probability: number;
+  weather_code: number;
+  forecast: {
+    date: string;
+    high: number;
+    low: number;
+    precipitation_probability: number;
+    weather_code: number;
+  }[];
+}
+
+export interface SharedList {
+  id: string;
+  family_id: string;
+  name: string;
+  template: string | null;
+  archived: boolean;
+  created_by: string;
+  created_at: string;
+  items?: SharedListItem[];
+  _count?: { items: number };
+}
+
+export interface SharedListItem {
+  id: string;
+  list_id: string;
+  name: string;
+  checked: boolean;
+  created_by: string;
+  created_at: string;
+}
+
+export type RedemptionStatus = "pending" | "approved" | "denied";
+
+export interface Reward {
+  id: string;
+  family_id: string;
+  name: string;
+  description: string | null;
+  points_cost: number;
+  active: boolean;
+  created_by: string;
+  created_at: string;
+}
+
+export interface Redemption {
+  id: string;
+  reward_id: string;
+  redeemed_by: string;
+  status: RedemptionStatus;
+  approved_by: string | null;
+  created_at: string;
+  resolved_at: string | null;
+  reward?: Reward;
+  redeemer?: User;
+}
+
+export interface MealSuggestion {
+  name: string;
+  meal_type: MealType;
+  ingredients: { name: string; quantity: string; category: string }[];
+}

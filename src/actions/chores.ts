@@ -5,6 +5,7 @@ import { requireFamily } from "@/lib/auth/session";
 import { choreSchema } from "@/lib/validators";
 import { revalidatePath } from "next/cache";
 import { startOfDay, endOfDay, startOfWeek, endOfWeek } from "date-fns";
+import { notifyUser } from "@/lib/notify";
 
 export async function getChores() {
   const { membership } = await requireFamily();
@@ -125,6 +126,15 @@ export async function createChore(formData: FormData) {
       points: parsed.data.points,
     },
   });
+
+  // Notify assignee (push + email based on their prefs)
+  if (parsed.data.assigned_to) {
+    notifyUser(parsed.data.assigned_to, "choreAssignments", {
+      title: "New chore assigned",
+      body: parsed.data.title,
+      url: "/chores",
+    }).catch(() => {});
+  }
 
   revalidatePath("/chores");
   return { success: true };

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getMealsForWeek } from "@/actions/meals";
 import { MealGrid } from "@/components/meals/meal-grid";
 import { GenerateListButton } from "@/components/meals/generate-list-button";
+import { MealSuggestions } from "@/components/meals/meal-suggestions";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 function getMonday(dateStr?: string): Date {
@@ -71,6 +72,8 @@ export default async function MealsPage({
           <ChevronRightIcon />
         </Link>
       </div>
+
+      <MealSuggestions />
 
       <MealGrid meals={meals} weekStart={weekStart} />
     </div>

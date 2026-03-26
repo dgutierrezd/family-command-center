@@ -8,7 +8,9 @@ import {
   CalendarDays,
   ChefHat,
   ShoppingCart,
+  ClipboardList,
   CheckSquare,
+  Gift,
   Settings,
 } from "lucide-react";
 import { UserMenu } from "./user-menu";
@@ -18,7 +20,9 @@ const navItems = [
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/meals", label: "Meals", icon: ChefHat },
   { href: "/grocery-list", label: "Grocery List", icon: ShoppingCart },
+  { href: "/lists", label: "Lists", icon: ClipboardList },
   { href: "/chores", label: "Chores", icon: CheckSquare },
+  { href: "/rewards", label: "Rewards", icon: Gift },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
