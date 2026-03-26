@@ -34,7 +34,7 @@ export default async function AppLayout({
         userId={session.user.id}
       >
         <AppNav>{children}</AppNav>
-        <Toaster richColors position="top-right" />
+        <Toaster richColors position="bottom-center" />
       </FamilyProvider>
     </SessionProvider>
   );

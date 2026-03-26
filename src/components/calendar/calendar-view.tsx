@@ -157,7 +157,7 @@ export function CalendarView({ events, familyId }: CalendarViewProps) {
                   key={day.toISOString()}
                   type="button"
                   onClick={() => handleDayClick(day)}
-                  className={`flex min-h-24 flex-col border-b border-r p-1 text-left transition-colors hover:bg-muted/30 ${
+                  className={`flex min-h-24 flex-col border-b border-r p-1 text-left transition-all duration-150 hover:bg-accent/40 hover:shadow-sm ${
                     !inMonth ? "bg-muted/10 text-muted-foreground/50" : ""
                   }`}
                 >
@@ -180,7 +180,7 @@ export function CalendarView({ events, familyId }: CalendarViewProps) {
                       />
                     ))}
                     {dayEvents.length > 3 && (
-                      <span className="px-1 text-xs text-muted-foreground">
+                      <span className="px-1 text-xs text-primary font-medium">
                         +{dayEvents.length - 3} more
                       </span>
                     )}

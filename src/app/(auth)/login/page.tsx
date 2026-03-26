@@ -42,9 +42,9 @@ function SetupMessage() {
   if (!isSetup) return null;
 
   return (
-    <Card className="border-blue-200 bg-blue-50 max-w-md mx-auto">
+    <Card className="border-primary/30 bg-primary/5 max-w-md mx-auto">
       <CardContent className="pt-6 text-center">
-        <p className="text-blue-800 font-medium">
+        <p className="text-primary font-medium">
           Welcome! After signing in, you can create a new family or join
           an existing one with an invite code.
         </p>
@@ -55,14 +55,14 @@ function SetupMessage() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4 py-12">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background to-accent/40 px-4 py-12">
       <div className="w-full max-w-4xl space-y-8">
         {/* Hero */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
             Family Command Center
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Manage your family&apos;s calendar, meals, groceries, and chores in
             one place. Stay organized together.
           </p>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                 </svg>
                 Sign in with Google
               </Button>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted-foreground">
                 We&apos;ll use your Google account to sync calendars too.
               </p>
             </CardContent>
@@ -118,16 +118,16 @@ export default function LoginPage() {
         {/* Features grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
           {features.map((feature) => (
-            <Card key={feature.title} className="border-slate-200">
+            <Card key={feature.title} className="border-border border-l-4 border-l-primary/60">
               <CardContent className="pt-6 flex gap-4">
                 <div className="shrink-0">
-                  <feature.icon className="h-8 w-8 text-slate-700" />
+                  <feature.icon className="h-8 w-8 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900">
+                  <h3 className="font-semibold text-foreground">
                     {feature.title}
                   </h3>
-                  <p className="text-sm text-slate-500 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     {feature.description}
                   </p>
                 </div>

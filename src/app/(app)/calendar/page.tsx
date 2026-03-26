@@ -23,7 +23,7 @@ export default async function CalendarPage() {
   return (
     <div className="mx-auto w-full max-w-6xl space-y-6 p-4 md:p-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold tracking-tight">Calendar</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Calendar</h1>
         <GoogleSyncButton />
       </div>
 

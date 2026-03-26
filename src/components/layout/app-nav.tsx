@@ -26,11 +26,11 @@ export function AppNav({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex h-screen bg-background">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex md:w-64 md:flex-col border-r border-slate-200 bg-white">
-        <div className="flex h-16 items-center px-6 border-b border-slate-200">
-          <h1 className="text-lg font-bold text-slate-900 truncate">
+      <aside className="hidden md:flex md:w-64 md:flex-col border-r border-border bg-card">
+        <div className="flex h-16 items-center px-6 border-b border-border">
+          <h1 className="text-lg font-extrabold text-primary truncate">
             Family Command Center
           </h1>
         </div>
@@ -45,8 +45,8 @@ export function AppNav({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-slate-100 text-slate-900"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    ? "bg-primary/10 text-primary font-semibold"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
                 <item.icon className="h-5 w-5 shrink-0" />
@@ -56,7 +56,7 @@ export function AppNav({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="border-t border-slate-200 p-3">
+        <div className="border-t border-border p-3">
           <UserMenu />
         </div>
       </aside>
@@ -64,8 +64,8 @@ export function AppNav({ children }: { children: React.ReactNode }) {
       {/* Main content area */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Mobile header */}
-        <header className="flex md:hidden h-14 items-center justify-between border-b border-slate-200 bg-white px-4">
-          <h1 className="text-base font-bold text-slate-900 truncate">
+        <header className="flex md:hidden h-14 items-center justify-between border-b border-border bg-card px-4">
+          <h1 className="text-base font-extrabold text-primary truncate">
             Family Command Center
           </h1>
           <UserMenu />
@@ -77,7 +77,7 @@ export function AppNav({ children }: { children: React.ReactNode }) {
         </main>
 
         {/* Mobile bottom tabs */}
-        <nav className="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-50">
+        <nav className="md:hidden fixed bottom-0 inset-x-0 bg-card border-t border-border z-50 pb-[env(safe-area-inset-bottom)]">
           <div className="flex justify-around">
             {navItems.map((item) => {
               const isActive = pathname.startsWith(item.href);
@@ -88,8 +88,8 @@ export function AppNav({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex flex-col items-center gap-0.5 py-2 px-1 text-[10px] font-medium transition-colors min-w-0",
                     isActive
-                      ? "text-slate-900"
-                      : "text-slate-400 hover:text-slate-600"
+                      ? "text-primary"
+                      : "text-muted-foreground/60 hover:text-foreground"
                   )}
                 >
                   <item.icon className="h-5 w-5 shrink-0" />

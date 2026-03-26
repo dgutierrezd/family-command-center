@@ -30,8 +30,8 @@ export default async function SettingsPage() {
   const members = membersRaw as (FamilyMember & { user: User })[];
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+    <div className="space-y-6 p-4 md:p-6 lg:p-8 max-w-5xl mx-auto">
+      <h1 className="text-3xl font-extrabold tracking-tight">Settings</h1>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Family Info */}

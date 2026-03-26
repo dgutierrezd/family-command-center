@@ -29,9 +29,9 @@ export default async function ChoresPage() {
   const members = membersRaw as (FamilyMember & { user: User })[];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Chores</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Chores</h1>
         <ChorePageActions members={members} />
       </div>
 

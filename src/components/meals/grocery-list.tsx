@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusIcon, TrashIcon } from "lucide-react";
+import { PlusIcon, TrashIcon, ShoppingCart } from "lucide-react";
 
 type ActionResult = { success?: boolean; error?: string };
 
@@ -166,10 +166,11 @@ export function GroceryList({ items }: GroceryListProps) {
 
       {/* Grouped items */}
       {sortedCategories.length === 0 && (
-        <p className="text-center text-muted-foreground py-8">
-          No items on your grocery list. Add items manually or generate from
-          your meal plan.
-        </p>
+        <div className="flex flex-col items-center gap-3 py-12">
+          <ShoppingCart className="size-12 text-muted-foreground/20" />
+          <p className="text-center text-muted-foreground">Your grocery list is empty.</p>
+          <p className="text-center text-sm text-muted-foreground/70">Add items above or generate from your meal plan.</p>
+        </div>
       )}
 
       {sortedCategories.map((category) => (
@@ -188,9 +189,9 @@ export function GroceryList({ items }: GroceryListProps) {
                   onCheckedChange={() => handleToggle(item)}
                 />
                 <span
-                  className={`flex-1 text-sm ${
+                  className={`flex-1 text-sm transition-all duration-200 ${
                     item.checked
-                      ? "line-through text-muted-foreground"
+                      ? "line-through text-muted-foreground/60 opacity-60"
                       : ""
                   }`}
                 >

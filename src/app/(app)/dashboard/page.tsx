@@ -47,9 +47,9 @@ export default async function DashboardPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">
+        <h1 className="text-3xl font-extrabold tracking-tight">
           Welcome, {session.user.name ?? "there"}!
         </h1>
         <p className="text-muted-foreground">
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Today's Events */}
-        <Card>
+        <Card className="border-t-2 border-t-indigo-400">
           <CardHeader className="flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <CalendarDays className="size-4 text-indigo-500" />
@@ -86,7 +86,10 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             {events.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No events today.</p>
+              <div className="flex flex-col items-center gap-2 py-4">
+                <CalendarDays className="size-8 text-muted-foreground/30" />
+                <p className="text-sm text-muted-foreground">No events today -- enjoy the free time!</p>
+              </div>
             ) : (
               <ul className="space-y-2">
                 {events.slice(0, 5).map((event) => (
@@ -118,7 +121,7 @@ export default async function DashboardPage() {
         </Card>
 
         {/* Today's Meals */}
-        <Card>
+        <Card className="border-t-2 border-t-emerald-400">
           <CardHeader className="flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <UtensilsCrossed className="size-4 text-emerald-500" />
@@ -130,7 +133,10 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             {meals.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No meals planned today.</p>
+              <div className="flex flex-col items-center gap-2 py-4">
+                <UtensilsCrossed className="size-8 text-muted-foreground/30" />
+                <p className="text-sm text-muted-foreground">No meals planned yet. What sounds good?</p>
+              </div>
             ) : (
               <ul className="space-y-2">
                 {meals.slice(0, 5).map((meal) => (
@@ -147,7 +153,7 @@ export default async function DashboardPage() {
         </Card>
 
         {/* Chores Due */}
-        <Card>
+        <Card className="border-t-2 border-t-amber-400">
           <CardHeader className="flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <ListChecks className="size-4 text-amber-500" />
@@ -159,7 +165,10 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             {pendingChores.length === 0 ? (
-              <p className="text-sm text-muted-foreground">All chores done for today!</p>
+              <div className="flex flex-col items-center gap-2 py-4">
+                <ListChecks className="size-8 text-emerald-400" />
+                <p className="text-sm text-emerald-600 font-medium">All done for today -- great job!</p>
+              </div>
             ) : (
               <ul className="space-y-2">
                 {pendingChores.slice(0, 5).map((chore) => (

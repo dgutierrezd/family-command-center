@@ -123,7 +123,7 @@ export function EventForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{isEditing ? "Edit Event" : "New Event"}</DialogTitle>
         </DialogHeader>
@@ -235,7 +235,7 @@ export function EventForm({
                   key={c.value}
                   type="button"
                   onClick={() => setColor(c.value)}
-                  className="h-7 w-7 rounded-full border-2 transition-transform hover:scale-110"
+                  className="h-8 w-8 rounded-full border-2 transition-all duration-150 hover:scale-115 hover:shadow-md active:scale-100"
                   style={{
                     backgroundColor: c.value,
                     borderColor:

@@ -50,9 +50,9 @@ export default async function MealsPage({
   const meals = await getMealsForWeek(weekStart, weekEnd);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Meal Planner</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Meal Planner</h1>
         <GenerateListButton weekStart={weekStart} weekEnd={weekEnd} />
       </div>
 
@@ -63,7 +63,7 @@ export default async function MealsPage({
         >
           <ChevronLeftIcon />
         </Link>
-        <span className="text-sm font-medium">
+        <span className="text-base font-semibold">
           {formatWeekLabel(monday)}
         </span>
         <Link

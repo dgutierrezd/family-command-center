@@ -94,7 +94,7 @@ export function MealGrid({ meals, weekStart }: MealGridProps) {
                 return (
                   <Card
                     key={dayIndex}
-                    className="p-2 min-h-16 cursor-pointer hover:bg-muted/50 transition-colors flex items-center justify-center"
+                    className="group p-2 min-h-16 cursor-pointer hover:bg-accent/50 transition-colors flex items-center justify-center"
                     onClick={() => handleCellClick(date, type.value)}
                   >
                     {meal ? (
@@ -102,7 +102,7 @@ export function MealGrid({ meals, weekStart }: MealGridProps) {
                         {meal.name}
                       </span>
                     ) : (
-                      <PlusIcon className="size-4 text-muted-foreground" />
+                      <PlusIcon className="size-4 text-muted-foreground/40 transition-all group-hover:text-primary group-hover:scale-110" />
                     )}
                   </Card>
                 );

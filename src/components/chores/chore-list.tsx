@@ -83,9 +83,10 @@ export function ChoreList({ chores, members, familyId }: ChoreListProps) {
       </div>
 
       {filtered.length === 0 && (
-        <p className="py-8 text-center text-sm text-muted-foreground">
-          No chores found.
-        </p>
+        <div className="flex flex-col items-center gap-3 py-12">
+          <CheckCircle2 className="size-12 text-emerald-300" />
+          <p className="text-center text-sm font-medium text-emerald-600">All clear -- no chores to show!</p>
+        </div>
       )}
 
       <ul className="divide-y divide-border rounded-lg border">
@@ -109,8 +110,8 @@ export function ChoreList({ chores, members, familyId }: ChoreListProps) {
                   >
                     {chore.title}
                   </span>
-                  <Badge variant="secondary" className="gap-1">
-                    <Star className="size-3" />
+                  <Badge variant="secondary" className="gap-1 bg-amber-100 text-amber-700 border-amber-200">
+                    <Star className="size-3 fill-amber-400" />
                     {chore.points}
                   </Badge>
                   {recurrenceLabel(chore.recurrence_rule) && (
@@ -151,6 +152,7 @@ export function ChoreList({ chores, members, familyId }: ChoreListProps) {
                 <Button
                   size="sm"
                   variant="outline"
+                  className="border-emerald-300 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
                   onClick={() => handleComplete(chore.id)}
                 >
                   Done

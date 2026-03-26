@@ -23,7 +23,7 @@ export function EventChip({ event, onClick, compact = false }: EventChipProps) {
         e.stopPropagation();
         onClick?.(event);
       }}
-      className="flex w-full items-center gap-1 truncate rounded px-1.5 py-0.5 text-left text-xs font-medium text-white transition-opacity hover:opacity-80"
+      className="flex w-full items-center gap-1 truncate rounded-md px-1.5 py-0.5 text-left text-xs font-medium text-white transition-all duration-150 hover:opacity-85 hover:shadow-sm hover:scale-[1.02] active:scale-100"
       style={{ backgroundColor: event.color ?? "#6366f1" }}
       title={event.title}
     >

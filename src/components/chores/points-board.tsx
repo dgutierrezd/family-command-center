@@ -38,14 +38,17 @@ export function PointsBoard({ tally, members }: PointsBoardProps) {
       </div>
 
       {ranked.length === 0 && (
-        <p className="text-sm text-muted-foreground">No members found.</p>
+        <div className="flex flex-col items-center gap-2 py-6">
+          <Trophy className="size-8 text-muted-foreground/20" />
+          <p className="text-sm text-muted-foreground">Complete chores to earn points!</p>
+        </div>
       )}
 
       <ul className="space-y-2">
         {ranked.map((entry, idx) => (
           <li
             key={entry.member.user_id}
-            className="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-muted/50"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-muted/50 ${idx === 0 ? "bg-amber-50 border border-amber-200" : ""}`}
           >
             <span className="w-5 text-center text-sm font-semibold text-muted-foreground">
               {idx + 1}
@@ -61,7 +64,7 @@ export function PointsBoard({ tally, members }: PointsBoardProps) {
             <span className="flex-1 text-sm font-medium">
               {entry.member.user.name}
             </span>
-            <span className="text-sm font-semibold tabular-nums">
+            <span className={`text-sm font-semibold tabular-nums ${idx === 0 ? "text-amber-600" : ""}`}>
               {entry.points} pts
             </span>
           </li>
