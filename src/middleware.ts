@@ -6,6 +6,15 @@ const publicPaths = ["/login", "/invite", "/api/auth", "/api/cron"];
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Redirect authenticated users away from login
+  if (pathname === "/login") {
+    const token = await getToken({ req: request });
+    if (token) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+    return NextResponse.next();
+  }
+
   if (publicPaths.some((p) => pathname.startsWith(p))) {
     return NextResponse.next();
   }
